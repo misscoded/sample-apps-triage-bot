@@ -1,8 +1,11 @@
 import { App, LogLevel } from '@slack/bolt';
+import { Octokit } from "octokit";
 import { config } from 'dotenv';
 import registerListeners from './listeners';
 
 config();
+
+const octokit = new Octokit({ auth: process.env.GITHUB_ACCESS_TOKEN });
 
 // For development purposes only
 const tempDB = new Map();
@@ -57,7 +60,7 @@ const app = new App({
 });
 
 /** Register Listeners */
-registerListeners(app);
+registerListeners(app, octokit);
 
 /** Start Bolt App */
 (async () => {
